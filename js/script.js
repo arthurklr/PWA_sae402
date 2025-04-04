@@ -52,28 +52,37 @@ document.addEventListener('DOMContentLoaded', function () {
         const escapeGames = [
             {
                 id: 1,
-                name: "Escape Hunt Mulhouse",
+                name: "Escape 1",
                 description: "Escape games immersifs pour tous",
                 address: "84 Rue des Machines, 68200 Mulhouse",
-                location: [47.750839, 7.335888],
+                location: [47.74691132809389, 7.3386484567601995],
                 difficulty: "Moyen à Difficile",
                 duration: "60 minutes"
             },
             {
                 id: 2,
-                name: "Locked Up Mulhouse",
+                name: "Escape 2",
                 description: "Énigmes et aventures captivantes",
                 address: "12 Rue de la Sinne, 68100 Mulhouse",
-                location: [47.745623, 7.339456],
+                location: [47.74570161101235, 7.338345483442383],
                 difficulty: "Facile à Moyen",
                 duration: "45-60 minutes"
             },
             {
                 id: 3,
-                name: "The Key Mulhouse",
+                name: "Escape 3",
                 description: "Expériences d'évasion uniques",
                 address: "25 Avenue du Président Kennedy, 68200 Mulhouse",
-                location: [47.757123, 7.328901],
+                location: [47.74570161101235, 7.338345483442383],
+                difficulty: "Difficile",
+                duration: "75 minutes"
+            },
+            {
+                id: 4,
+                name: "Escape 4",
+                description: "Expériences d'évasion uniques",
+                address: "25 Avenue du Président Kennedy, 68200 Mulhouse",
+                location: [47.74645786986951, 7.339211764661519],
                 difficulty: "Difficile",
                 duration: "75 minutes"
             }
