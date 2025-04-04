@@ -35,13 +35,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Ajouter le script pour le routage
     const routingScript = document.createElement('script');
-    routingScript.src = 'https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js';
+    routingScript.src = 'https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js';
     document.head.appendChild(routingScript);
 
     // Ajouter le CSS pour le routage
     const routingCSS = document.createElement('link');
     routingCSS.rel = 'stylesheet';
-    routingCSS.href = 'https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css';
+    routingCSS.href = 'https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css';
     document.head.appendChild(routingCSS);
 
     // Attendre que Leaflet soit chargé
@@ -74,43 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 location: [47.72949714341961, 7.301355372585623],
                 difficulty: "Difficile",
                 duration: "75 minutes"
-            }/*
-            {
-                id: 1,
-                name: "Escape 1",
-                description: "Escape games immersifs pour tous",
-                address: "84 Rue des Machines, 68200 Mulhouse",
-                location: [47.74691132809389, 7.3386484567601995],
-                difficulty: "Moyen à Difficile",
-                duration: "60 minutes"
-            },
-            {
-                id: 2,
-                name: "Escape 2",
-                description: "Énigmes et aventures captivantes",
-                address: "12 Rue de la Sinne, 68100 Mulhouse",
-                location: [47.74570161101235, 7.338345483442383],
-                difficulty: "Facile à Moyen",
-                duration: "45-60 minutes"
-            },
-            {
-                id: 3,
-                name: "Escape 3",
-                description: "Expériences d'évasion uniques",
-                address: "25 Avenue du Président Kennedy, 68200 Mulhouse",
-                location: [47.74570161101235, 7.338345483442383],
-                difficulty: "Difficile",
-                duration: "75 minutes"
-            },
-            {
-                id: 4,
-                name: "Escape 4",
-                description: "Expériences d'évasion uniques",
-                address: "25 Avenue du Président Kennedy, 68200 Mulhouse",
-                location: [47.74645786986951, 7.339211764661519],
-                difficulty: "Difficile",
-                duration: "75 minutes"
-            }*/
+            }
         ];
 
         // Initialiser la carte au centre de Mulhouse
@@ -253,6 +217,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 map.removeControl(routingControl);
             }
 
+            const apiKey = '5b3ce3597851110001cf62485db0521f758f4936958e6672c3857aa2'; // Remplacer par votre clé API
+
             routingControl = L.Routing.control({
                 waypoints: [
                     start,
@@ -263,10 +229,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 lineOptions: {
                     styles: [{ color: '#FF4500', weight: 6, opacity: 0.9, dashArray: '10, 10' }]
                 },
-                /*router: L.Routing.osrmv1({
-                    serviceUrl: 'https://router.project-osrm.org/route/v1',
-                    profile: 'walking'
-                }),*/
+                router: L.Routing.osrmv1({
+                    serviceUrl: `https://api.openrouteservice.org/v2/directions/foot-walking/geojson?api_key=${apiKey}`, // Ajout de la clé API dans l'URL
+                    profile: '',
+                    routingOptions: {
+                        travelMode: 'foot-walking'
+                    }
+                }),
                 createMarker: function () { return null; }
             }).addTo(map);
 
@@ -282,14 +251,23 @@ document.addEventListener('DOMContentLoaded', function () {
                     Math.abs(g.location[1] - destLng) < 0.0001
                 );
 
-                let directionsHTML = `
-                    <div class="directions-summary">
-                        <h3>Itinéraire vers ${game ? game.name : 'la destination'}</h3>
-                        <p>Distance: ${(summary.totalDistance / 1000).toFixed(2)} km</p>
-                        <p>Durée estimée: ${Math.round(summary.totalTime / 60)} minutes</p>
-                    </div>
-                `;
-                document.getElementById('directions').innerHTML = directionsHTML;
+                if (game) {
+                    const distance = calculateDistance([userLocation[0], userLocation[1]], [game.location[0], game.location[1]]);
+                    const duration = summary.totalTime / 60; // Convertir en minutes
+
+                    document.getElementById('directions').innerHTML = `
+                        <p>Distance: ${distance.toFixed(2)} km</p>
+                        <p>Durée estimée: ${Math.round(duration)} minutes</p>
+                        <div class="instructions">
+                            ${instructions.map(instruction => `
+                                <div class="instruction">
+                                    <p>${instruction.text}</p>
+                                    <p>${instruction.distance} m</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
             });
         }
 
