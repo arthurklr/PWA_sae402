@@ -1,4 +1,3 @@
-// Attendre que le DOM soit chargé
 document.addEventListener('DOMContentLoaded', function () {
     // Créer une section pour la carte dans le HTML
     const mapSection = document.createElement('section');
@@ -6,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
     mapSection.innerHTML = `
         <h2>Découvrez les Escape Games de Mulhouse</h2>
         <div id="map" style="height: 400px; width: 100%; margin-bottom: 20px;"></div>
-        <button id="get-location" class="explore">Localiser ma position</button>
         <div id="directions"></div>
     `;
 
@@ -55,6 +53,33 @@ document.addEventListener('DOMContentLoaded', function () {
                 name: "Escape 1",
                 description: "Escape games immersifs pour tous",
                 address: "84 Rue des Machines, 68200 Mulhouse",
+                location: [47.73114794106034, 7.301366876065549],
+                difficulty: "Moyen à Difficile",
+                duration: "60 minutes"
+            },
+            {
+                id: 2,
+                name: "Escape 2",
+                description: "Énigmes et aventures captivantes",
+                address: "12 Rue de la Sinne, 68100 Mulhouse",
+                location: [47.729951037662794, 7.300505018567932],
+                difficulty: "Facile à Moyen",
+                duration: "45-60 minutes"
+            },
+            {
+                id: 3,
+                name: "Escape 3",
+                description: "Expériences d'évasion uniques",
+                address: "25 Avenue du Président Kennedy, 68200 Mulhouse",
+                location: [47.72949714341961, 7.301355372585623],
+                difficulty: "Difficile",
+                duration: "75 minutes"
+            }/*
+            {
+                id: 1,
+                name: "Escape 1",
+                description: "Escape games immersifs pour tous",
+                address: "84 Rue des Machines, 68200 Mulhouse",
                 location: [47.74691132809389, 7.3386484567601995],
                 difficulty: "Moyen à Difficile",
                 duration: "60 minutes"
@@ -85,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 location: [47.74645786986951, 7.339211764661519],
                 difficulty: "Difficile",
                 duration: "75 minutes"
-            }
+            }*/
         ];
 
         // Initialiser la carte au centre de Mulhouse
@@ -132,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function () {
         function createRoute(game) {
             if (!userLocation) {
                 document.getElementById('directions').innerHTML = `
-                    <p class="error">Veuillez d'abord localiser votre position en cliquant sur "Localiser ma position".</p>
+                    <p class="error">Veuillez d'abord localiser votre position.</p>
                 `;
                 return;
             }
@@ -147,65 +172,28 @@ document.addEventListener('DOMContentLoaded', function () {
             map.fitBounds(bounds, { padding: [50, 50] });
         }
 
-        // Fonction pour obtenir la localisation de l'utilisateur
-        document.getElementById('get-location').addEventListener('click', function () {
+        // Fonction pour obtenir la localisation de l'utilisateur et la suivre en continu
+        function startLocationTracking() {
             if (navigator.geolocation) {
-                // Obtenir la position initiale
-                navigator.geolocation.getCurrentPosition(
+                navigator.geolocation.watchPosition(
                     function (position) {
                         userLocation = [position.coords.latitude, position.coords.longitude];
 
-                        // Supprimer le marqueur précédent s'il existe
                         if (userMarker) {
                             map.removeLayer(userMarker);
                         }
 
-                        // Ajouter un marqueur pour l'utilisateur
                         userMarker = L.marker(userLocation).addTo(map);
-                        userMarker.bindPopup("Vous êtes ici").openPopup();
+                        userMarker.bindPopup("Vous êtes ici");
 
-                        // Centrer la carte sur la position de l'utilisateur
-                        map.setView(userLocation, 13);
+                        if (!map.getBounds().contains(L.latLng(userLocation[0], userLocation[1]))) {
+                            map.setView(userLocation, 13);
+                        }
 
-                        // Mettre à jour le texte du bouton
-                        document.getElementById('get-location').textContent = "Position localisée";
-                        document.getElementById('get-location').classList.add('located');
-
-                        // Démarrer le suivi de position en continu
-                        const watchId = navigator.geolocation.watchPosition(
-                            function (newPosition) {
-                                const newLocation = [newPosition.coords.latitude, newPosition.coords.longitude];
-
-                                // Vérifier si la position a suffisamment changé (plus de 10 mètres)
-                                if (!userLocation || calculateDistance(userLocation, newLocation) > 0.01) {
-                                    userLocation = newLocation;
-
-                                    // Mettre à jour le marqueur de l'utilisateur
-                                    if (userMarker) {
-                                        map.removeLayer(userMarker);
-                                    }
-                                    userMarker = L.marker(userLocation).addTo(map);
-                                    userMarker.bindPopup("Vous êtes ici");
-
-                                    // Mettre à jour l'itinéraire si un itinéraire est actif
-                                    if (routingControl && routingControl._selectedRoute) {
-                                        const currentDestination = routingControl.getWaypoints()[1].latLng;
-                                        updateRoute(L.latLng(userLocation[0], userLocation[1]), currentDestination);
-                                    }
-                                }
-                            },
-                            function (error) {
-                                console.error("Erreur lors du suivi de position:", error);
-                            },
-                            {
-                                enableHighAccuracy: true,
-                                timeout: 10000,
-                                maximumAge: 0
-                            }
-                        );
-
-                        // Stocker l'ID du suivi pour pouvoir l'arrêter plus tard si nécessaire
-                        window.positionWatchId = watchId;
+                        if (routingControl && routingControl._selectedRoute) {
+                            const currentDestination = routingControl.getWaypoints()[1].latLng;
+                            updateRoute(L.latLng(userLocation[0], userLocation[1]), currentDestination);
+                        }
                     },
                     function (error) {
                         let errorMessage;
@@ -234,7 +222,10 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 document.getElementById('directions').innerHTML = "<p class='error'>Votre navigateur ne prend pas en charge la géolocalisation.</p>";
             }
-        });
+        }
+
+        // Lancer le suivi de localisation dès le chargement de la carte
+        startLocationTracking();
 
         // Fonction pour calculer la distance entre deux points (en km)
         function calculateDistance(point1, point2) {
@@ -258,12 +249,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Fonction pour mettre à jour l'itinéraire
         function updateRoute(start, end) {
-            // Supprimer l'itinéraire précédent s'il existe
             if (routingControl) {
                 map.removeControl(routingControl);
             }
 
-            // Créer le nouvel itinéraire
             routingControl = L.Routing.control({
                 waypoints: [
                     start,
@@ -281,13 +270,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 createMarker: function () { return null; }
             }).addTo(map);
 
-            // Afficher les instructions d'itinéraire
             routingControl.on('routesfound', function (e) {
                 const routes = e.routes;
                 const summary = routes[0].summary;
                 const instructions = routes[0].instructions;
 
-                // Trouver l'escape game correspondant à la destination
                 const destLat = end.lat;
                 const destLng = end.lng;
                 const game = escapeGames.find(g =>
@@ -301,14 +288,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <p>Distance: ${(summary.totalDistance / 1000).toFixed(2)} km</p>
                         <p>Durée estimée: ${Math.round(summary.totalTime / 60)} minutes</p>
                     </div>
-                    <ol class="directions-steps">
                 `;
-
-                instructions.forEach(function (instruction) {
-                    directionsHTML += `<li>${instruction.text}</li>`;
-                });
-
-                directionsHTML += '</ol>';
                 document.getElementById('directions').innerHTML = directionsHTML;
             });
         }
@@ -363,25 +343,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 background-color: #FFD2D2;
                 padding: 10px;
                 border-radius: 4px;
-            }
-            
-            #get-location {
-                background-color: #4CAF50;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 4px;
-                cursor: pointer;
-                font-weight: bold;
-                margin-bottom: 20px;
-            }
-            
-            #get-location:hover {
-                background-color: #45a049;
-            }
-            
-            #get-location.located {
-                background-color: #2196F3;
             }
             
             .escape-game-popup h3 {
