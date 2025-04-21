@@ -1,0 +1,27 @@
+#map{
+    height: 400px;
+    width: 100%;
+}
+
+#map-section {
+    margin: 40px 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.error {
+    color: #D8000C;
+    background-color: #FFD2D2;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.escape-game-popup h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.escape-game-popup p {
+    margin: 5px 0;
+}

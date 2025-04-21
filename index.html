@@ -189,6 +189,9 @@
 	<!-- On préload le style pour le rendre non bloquant -->
 	<link rel="preload" href="styles/style.css" as="style">
 	<link rel="stylesheet" href="styles/style.css">
+
+	<link rel="preload" href="https://unpkg.com/leaflet/dist/leaflet.css" as="style">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 
 <body>
@@ -230,6 +233,11 @@
 			<a href="#page1" class="explore">Explore</a>
 		</section>
 
+		<section id="map-section">
+			<h2>Découvrez les Escape Games de Mulhouse</h2>
+			<div id="map"></div>
+		</section>
+
 		<section id="page1">
 			Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt mollitia voluptatum dolore at eaque
 			magnam, in quasi, minima voluptate exercitationem temporibus sapiente corrupti natus neque ullam
@@ -268,11 +276,9 @@
 		// Événement pour le burger menu de fermeture
 		document.querySelector('.burger-menu-close').addEventListener('click', toggleMenu);
 	</script>
-	<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/leaflet-routing-machine-ign@1.0.0/dist/leaflet-routing-machine-ign.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/leaflet-geportal@1.0.0/dist/leaflet-geportal.min.js"></script>
-	<script src="js/script3.js"></script>
+	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+	<script src="js/script.js"></script>
 
 </body>
 
