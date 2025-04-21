@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu d'Énigme</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="permissions-policy" content="ambient-light-sensor=()">
+</head>
+
+<body>
+    <img src="img/perso.png" alt="Personnage" class="perso">
+    <div class="speech-bubble">
+        <p class="speech-text"></p>
+    </div>
+    <div id="game">
+        <button id="accessibilityButton">Activer le mode accessible</button>
+        <h1>Bienvenue dans le jeu d'énigme !</h1>
+        <p id="story"></p>
+        <div id="options"></div>
+        
+    </div>
+    <canvas id="mazeCanvas" style="display: none; border: 1px solid #000; background-color: white;"></canvas>
+    <script src="script.js"></script> 
+</body>
+
+</html>
