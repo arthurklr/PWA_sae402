@@ -528,7 +528,7 @@ Appel de la fonction pour lancer l'ensemble des jeux
 
 // Fonction pour rediriger vers la page d'accueil
 alert("Vous avez terminé le premier jeu ! Vous pouvez maintenant avancer dans l'aventure.");
-window.location.href="../index.html?etape=2";
+window.location.href="../index.html?etape=2#map";
 
 
 
