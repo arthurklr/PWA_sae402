@@ -1,6 +1,6 @@
 //Coordonnées de chaque etape
 
-const reunion = [47.72947373634656, 7.301243065536926]; // Place de la Réunion
+const premierPoint = [47.74695880403098, 7.338670211454569]; // Place de la Réunion
 //Valeur test
 //const premierPoint = [48.01965653270442, 7.296198454381838]; //test
 
