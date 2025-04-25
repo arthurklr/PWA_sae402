@@ -1,20 +1,20 @@
 //Coordonnées de chaque etape
 
-//const reunion = [47.72947373634656, 7.301243065536926]; // Place de la Réunion
+const reunion = [47.72947373634656, 7.301243065536926]; // Place de la Réunion
 //Valeur test
-const premierPoint = [48.01965653270442, 7.296198454381838]; //test
+//const premierPoint = [48.01965653270442, 7.296198454381838]; //test
 
-//const secondPoint = [47.74568759007926, 7.33833040531314]; // Musée beaux arts
+const secondPoint = [47.74568759007926, 7.33833040531314]; // Musée beaux arts
 //Valeur test
-const secondPoint = [48.01912643143712, 7.2964316632502015] //test
+//const secondPoint = [48.01912643143712, 7.2964316632502015] //test
 
-//const troisiemePoint = [47.74568759007926, 7.33833040531314]; //Musée beaux arts
+const troisiemePoint = [47.74568759007926, 7.33833040531314]; //Musée beaux arts
 //Valeur test
-const troisiemePoint = [48.018337186829676, 7.295897293902218]; //test 
+//const troisiemePoint = [48.018337186829676, 7.295897293902218]; //test 
 
-//const quatriemePoint = [47.740658, 7.335679]; //Valeur à changer
+const quatriemePoint = [47.74643990512586, 7.339232970100119]; //Valeur à changer
 //Valeur test
-const quatriemePoint = [48.0186600562757, 7.294803037709174]; //test
+//const quatriemePoint = [48.0186600562757, 7.294803037709174]; //test
 
 
 //Faire le passage des etapes
