@@ -23,7 +23,7 @@ let etape = params.get("etape");
 
 
 //Faire la Map
-const map = L.map('map').setView(premierPoint, 10);
+const map = L.map('map').setView(premierPoint, 15);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OSM contributors',
@@ -52,7 +52,7 @@ if (etape === "2") {
     map.removeLayer(Marker);
     L.marker(secondPoint).addTo(map).bindPopup("🎯 Etape 2");
     destination = secondPoint;
-    map.setView(secondPoint, 14);
+    map.setView(secondPoint, 15);
 }
 
 if (etape === "3") {
@@ -61,7 +61,7 @@ if (etape === "3") {
     map.removeLayer(secondPoint);
     L.marker(troisiemePoint).addTo(map).bindPopup("🎯 Etape 3");
     destination = troisiemePoint;
-    map.setView(troisiemePoint, 14);
+    map.setView(troisiemePoint, 15);
 }
 
 if (etape === "4") {
@@ -70,7 +70,7 @@ if (etape === "4") {
     map.removeLayer(troisiemePoint);
     L.marker(quatriemePoint).addTo(map).bindPopup("🎯 Etape 4");
     destination = quatriemePoint;
-    map.setView(quatriemePoint, 14);
+    map.setView(quatriemePoint, 15);
 }
 
 if (etape === "fin") {
